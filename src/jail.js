@@ -129,8 +129,10 @@
 				
 				currentStack = $.extend( {}, images );
 				
-				// Load the image
-				_loadImage( options, $img );
+				if ($img.attr('data-src')) {
+					// Load the image
+					_loadImage( options, $img );
+				}
 
 				// Image has been loaded so there is no need to listen anymore
 				$(e.currentTarget).unbind( e.type + '.' + options.id );
@@ -282,6 +284,10 @@
 		var $img = $(image),
 			container = (/scroll/i.test(options.event)) ? images.data("triggerElem") : $window,
 			isVisible = true;
+			
+		if ( !$img.attr("data-src") ) {
+			return false;
+		}
 
 		// If don't you want to load hidden images (default beahviour)
 		if ( !options.loadHiddenImages ) {
@@ -289,7 +295,7 @@
 		}
 		
 		// Load the image if it is not hidden and visible in the screen
-		if( isVisible && _isInTheScreen( container, $img, options.offset ) ) {
+		if( isVisible && _isInTheScreen( container, $img, options.offset )) {
 			_loadImage( options, $img );
 		}
 	}
